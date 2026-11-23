@@ -1,4 +1,4 @@
-const CACHE = 'smilehouse-v5';
+const CACHE = 'smilehouse-v6';
 const PRECACHE = [
 './',
   './01_red.jpg',
@@ -83,6 +83,6 @@ self.addEventListener('fetch', e => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
       return res;
-    }).catch(() => caches.match(req).then(hit => hit || caches.match('./.')))
+    }).catch(() => caches.match(req).then(hit => hit || caches.match('./')))
   );
 });
