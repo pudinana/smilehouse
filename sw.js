@@ -1,5 +1,5 @@
 /* SmileHouse 微笑小屋 · 离线缓存（扁平版） */
-const CACHE = 'smilehouse-v1';
+const CACHE = 'smilehouse-v2';
 const PRECACHE = [
   "./",
   "./index.html",
