@@ -573,6 +573,51 @@ img{display:block;max-width:100%}
   .ec-line{font-size:9.5px}
 }
 
+/* 情绪卡：先见七彩卡背，点开才翻出真正的情绪卡 */
+.ec-card.ec-flip{
+  display:block;width:100%;padding:0;border:none;background:none;
+  box-shadow:none;text-align:left;overflow:visible;
+}
+.ec-stage{display:block;position:relative;aspect-ratio:4/5;border-radius:18px}
+.ec-front,.ec-back{
+  position:absolute;inset:0;border-radius:18px;overflow:hidden;display:block;
+  transition:transform .52s cubic-bezier(.3,.8,.35,1),opacity .42s ease;
+}
+.ec-front{background:var(--cloud);border:1px solid var(--line);box-shadow:var(--shadow-sm);opacity:0;transform:scale(.96);z-index:1}
+.ec-front img{width:100%;height:100%;object-fit:cover;display:block}
+.ec-back{
+  z-index:2;border:1px solid rgba(255,255,255,.58);box-shadow:var(--shadow-sm);
+  transform-origin:50% 50%;
+}
+.ec-back::before{
+  content:"";position:absolute;inset:0;opacity:.45;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255,255,255,.6) 0 22%, transparent 23%),
+    radial-gradient(circle at 78% 82%, rgba(255,255,255,.45) 0 26%, transparent 27%),
+    radial-gradient(circle at 62% 36%, rgba(255,255,255,.32) 0 16%, transparent 17%);
+}
+.ec-back-in{
+  position:relative;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:9px;
+}
+.ec-back-mark{
+  width:52px;height:52px;border-radius:50%;overflow:hidden;
+  background:rgba(255,255,255,.74);box-shadow:0 4px 12px rgba(120,90,80,.18);
+}
+.ec-back-mark img{width:100%;height:100%;object-fit:cover;display:block}
+.ec-back-word{
+  font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.97);
+  text-shadow:0 1px 3px rgba(120,80,60,.25);
+}
+.ec-card.ec-flip.flipped .ec-back{opacity:0;transform:scale(.9) rotate(-4deg);pointer-events:none}
+.ec-card.ec-flip.flipped .ec-front{opacity:1;transform:scale(1);transition-delay:.1s}
+.ec-meta-pre,.ec-meta-post{padding:9px 11px 11px;display:flex;flex-direction:column;gap:4px}
+.ec-meta-post{display:none}
+.ec-card.ec-flip.flipped .ec-meta-pre{display:none}
+.ec-card.ec-flip.flipped .ec-meta-post{display:flex}
+.ec-hint{font-size:10px;color:var(--text-3);letter-spacing:.06em}
+.ec-card.ec-flip.flipped .ec-stage{cursor:zoom-in}
+
 /* ============================================================
    一楼：善念收集装置
    ============================================================ */
@@ -6832,15 +6877,50 @@ function renderEmotionCards(){
   const el = document.getElementById("emotionCards");
   if(!el) return;
   el.innerHTML = EMOTION_CARDS.map(c=>`
-    <button class="ec-card" onclick="openSceneLightbox('${c.src}','情感卡片 · ${c.color} · ${c.title}')">
-      <img src="${c.src}" alt="${c.color} · ${c.title}" loading="lazy" decoding="async" width="800" height="1000">
-      <span class="ec-meta">
+    <button class="ec-card ec-flip" onclick="flipEmotionCard(this)"
+            data-src="${c.src}" data-title="情感卡片 · ${c.color} · ${c.title}">
+      <span class="ec-stage">
+        <span class="ec-back" style="background:linear-gradient(150deg,${c.hex},${c.hex})">
+          <span class="ec-back-in">
+            <span class="ec-back-mark"><img src="lele_ip_mobile.png?v=20261127" alt="吉祥云乐乐"></span>
+            <span class="ec-back-word">点开这一刻</span>
+          </span>
+        </span>
+      </span>
+      <span class="ec-meta-pre"><span class="ec-hint">轻轻点开 · 看看这一张想说什么</span></span>
+      <span class="ec-meta-post">
         <span class="ec-top"><i class="ec-dot" style="background:${c.hex}"></i><b>${c.color} · ${c.title}</b></span>
         <span class="ec-line">${c.line}</span>
       </span>
     </button>`).join("");
 }
-
+function flipEmotionCard(el){
+  if(!el) return;
+  const src = el.getAttribute("data-src");
+  const title = el.getAttribute("data-title") || "情感卡片";
+  if(el.classList.contains("flipped")){
+    if(src && typeof openSceneLightbox === "function") openSceneLightbox(src, title);
+    return;
+  }
+  const stage = el.querySelector(".ec-stage");
+  const back = el.querySelector(".ec-back");
+  let front = stage && stage.querySelector(".ec-front");
+  if(stage && !front){
+    front = document.createElement("span");
+    front.className = "ec-front";
+    const img = document.createElement("img");
+    img.src = src || "";
+    img.alt = title;
+    front.appendChild(img);
+    stage.appendChild(front);
+  }
+  if(back){
+    back.style.opacity = "0";
+    back.style.transform = "scale(.9) rotate(-4deg)";
+    setTimeout(()=>{ back.style.display = "none"; }, 520);
+  }
+  el.classList.add("flipped");
+}
 /* ============================================================
    一楼：善念收集装置（仅本机保存）
    ============================================================ */
