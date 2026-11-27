@@ -1,4 +1,4 @@
-const CACHE = 'smilehouse-v6';
+const CACHE = 'smilehouse-v7';
 const PRECACHE = [
 './',
   './01_red.jpg',
@@ -47,6 +47,7 @@ const PRECACHE = [
   './index.html',
   './lele_ip.png',
   './lele_life.jpg',
+  './lele_v2.png',
   './life_doors_wide.jpg',
   './manifest.webmanifest',
   './mv_01_wide.jpg',
