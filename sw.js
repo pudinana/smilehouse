@@ -1,4 +1,4 @@
-const CACHE = 'smilehouse-v12';
+const CACHE = 'smilehouse-v13';
 const PRECACHE = [
   './',
   './manifest.webmanifest',
@@ -36,5 +36,6 @@ self.addEventListener('fetch', e => {
       .catch(() => caches.match(req).then(hit => hit || caches.match('./')))
   );
 });
+
 
 
