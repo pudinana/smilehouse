@@ -1,4 +1,4 @@
-const CACHE = 'smilehouse-v14';
+const CACHE = 'smilehouse-v15';
 const PRECACHE = [
   './',
   './manifest.webmanifest',
