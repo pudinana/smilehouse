@@ -6,6 +6,17 @@
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>SmileHouse 微笑小屋｜情感疗愈与内心探索</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
+<meta name="theme-color" content="#F2D3B8">
+<meta name="description" content="云端花园 SmileHouse · 免费公益疗愈空间，陪你把情绪轻轻放下。">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="云端花园">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
 <style>
 /* ============================================================
@@ -8767,5 +8778,11 @@ function resetMeditation(){
 <div class="lele-fab" id="leleFab" role="button" tabindex="0" aria-label="和乐乐说话" title="点一下，和乐乐说话" onclick="toggleLelePop()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLelePop()}">
   <img src="lele_ip_mobile.png" alt="乐乐">
 </div>
-</body>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js').catch(function () {});
+  });
+}
+</script></body>
 </html>

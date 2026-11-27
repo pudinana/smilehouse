@@ -1,16 +1,17 @@
 {
-  "name": "SmileHouse 微笑小屋",
-  "short_name": "微笑小屋",
-  "description": "一个免费的自助情绪陪伴空间，内容只保存在你自己的设备里。",
-  "lang": "zh-CN",
+  "name": "云端花园 SmileHouse",
+  "short_name": "云端花园",
+  "description": "免费公益疗愈空间，陪你把情绪轻轻放下，可以安静发呆，也可以和乐乐说说话。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#FBF7F2",
-  "theme_color": "#FBF7F2",
+  "orientation": "any",
+  "background_color": "#F9F6F2",
+  "theme_color": "#F2D3B8",
+  "lang": "zh-CN",
   "icons": [
     { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
   ]
 }
