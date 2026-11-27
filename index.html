@@ -5406,7 +5406,11 @@ const ANIM = [
 /* 网络直链映射表：把9集乐乐视频上传到云端拿到直链后，填在这里即可。
    填了就走网络播放，没填就回退到本地文件播放。
    例：ANIM_URL.ep1 = "https://你的视频直链.mp4"; */
-const ANIM_URL = {};
+const ANIM_URL = {
+  mv: "./video/ep0.mp4",
+  ep1: "./video/ep1.mp4",
+  ep2: "./video/ep2.mp4"
+};
 
 function fileURL(p){
   const parts = p.replace(/\\/g, "/").split("/");
@@ -5414,7 +5418,10 @@ function fileURL(p){
 }
 /* 取视频源：有网络直链走网络，否则回退本地文件 */
 function videoSrc(a){
-  return (ANIM_URL && ANIM_URL[a.id]) ? ANIM_URL[a.id] : fileURL(a.file);
+  return (ANIM_URL && ANIM_URL[a.id]) ? ANIM_URL[a.id] : "";
+}
+function isOnline(a){
+  return !!(ANIM_URL && ANIM_URL[a.id]);
 }
 function renderTravel(){
   const l = document.getElementById("travelList");
@@ -5425,9 +5432,9 @@ function renderTravel(){
       <span class="tc-body">
         <span class="tc-ep">${a.ep}</span>
         <span class="tc-title">${a.title}</span>
-        <span class="tc-meta">时长 ${a.dur} · 点击播放</span>
+        <span class="tc-meta">时长 ${a.dur}${isOnline(a) ? " · 点击播放" : " · 剪辑中"}</span>
         <span class="tc-line">${a.line}</span>
-        <span class="tc-btn">▶ 播放</span>
+        <span class="tc-btn">${isOnline(a) ? "▶ 播放" : "剪辑中"}</span>
       </span>
     </button>`).join("");
 }
@@ -5455,15 +5462,16 @@ function renderTravelPlay(){
   if(crumb) crumb.textContent = "旅行日记 · " + a.title;
   if(v){
     v.classList.toggle("wide", a.ratio === "w");
-    v.src = videoSrc(a);
+    const src = videoSrc(a);
+    if(src){ v.src = src; v.style.display = ""; } else { v.removeAttribute("src"); v.style.display = "none"; }
   }
   if(info){
     info.innerHTML = `
       <div class="travel-info-card">
         <div class="ti-ep">${a.ep} · 时长 ${a.dur}</div>
         <div class="ti-title">${a.title}</div>
-        <div class="ti-line">${a.line}</div>
-        <div class="ti-note">视频优先从云端加载；尚未填网络直链时，回退到本地文件播放。手机端如需观看，请把9集视频上传到云端拿到直链，填入网页代码里的 ANIM_URL 映射表后即可在线播放。</div>
+        <div class="ti-line">${isOnline(a) ? a.line : "这一集还在温柔地剪辑中，等它准备好了，乐乐第一时间叫你来听。"}</div>
+        <div class="ti-note">${isOnline(a) ? "视频已上传到云端花园，手机、iPad 都可以直接看；网络慢时会边下边播，稍等一会儿就好。" : "目前已上线：第0集（主题曲MV）、第1集·石头上的那朵云、第2集·第一个朋友。"}</div>
       </div>`;
   }
 }
